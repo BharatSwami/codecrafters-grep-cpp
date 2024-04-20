@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <stack>
 
 bool matchdigit(const std::string& input_line){
     int length = input_line.size();
@@ -14,6 +15,42 @@ bool matchalphanumeric(const std::string& input_line){
         if(std::isalnum(input_line[i])) return true;
     }
     return false;
+}
+bool positiveMatchGroup(const std::string& input_line, const std::string& pattern){
+    std::stack<char> s;
+    std::stack<std::pair<char,char>> s_pair;
+    int idx = 0, patternSize = pattern.length();
+    while(idx<patternSize){
+        if(idx != patternSize && pattern[idx] == '-'){
+            idx++;
+            char temp = s.top();
+            s.pop();
+            s_pair.push({temp,pattern[idx]});
+        }
+        else{
+            s.push(pattern[idx]);
+        }
+        idx++;
+    }
+    while (!s.empty())
+    {
+        char temp = s.top();
+        s.pop();
+        if(input_line.find(temp) != std::string::npos) return true;
+    }
+    while (!s_pair.empty())
+    {
+        std::pair<char,char> temp = s_pair.top();
+        s_pair.pop();
+        char temp_1 = temp.first, temp_2 = temp.second;
+        for(char ch = temp_1; ch<=temp_2;ch++){
+            if(input_line.find(ch) != std::string::npos) return true;
+        }
+        
+    }
+    
+    return false;
+
 }
 
 bool match_pattern(const std::string& input_line, const std::string& pattern) {
@@ -33,6 +70,15 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
             throw std::runtime_error("Unhandled pattern " + pattern);
             break;
         }
+    }
+    else if(pattern[0] == '[' && pattern[pattern.length()-1] == ']'){
+        if(pattern[0] == '^'){
+            return true;
+        }
+        else{
+            return positiveMatchGroup(input_line,pattern);
+        }
+
     }
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);
