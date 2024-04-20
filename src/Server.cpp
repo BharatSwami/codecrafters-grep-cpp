@@ -107,8 +107,8 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         }
     }
     else if(pattern[0] == '[' && pattern[pattern.length()-1] == ']'){
-        if(pattern[0] == '^'){
-            return true;
+        if(pattern[1] == '^'){
+            return negitiveMatchGroup(input_line,pattern);
         }
         else{
             return positiveMatchGroup(input_line,pattern);
