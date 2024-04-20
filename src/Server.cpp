@@ -19,9 +19,9 @@ bool matchalphanumeric(const std::string& input_line){
 bool positiveMatchGroup(const std::string& input_line, const std::string& pattern){
     std::stack<char> s;
     std::stack<std::pair<char,char>> s_pair;
-    int idx = 0, patternSize = pattern.length();
+    int idx = 1, patternSize = pattern.length();
     while(idx<patternSize){
-        if(idx != patternSize && pattern[idx] == '-'){
+        if(idx != patternSize-1 && pattern[idx] == '-'){
             idx++;
             char temp = s.top();
             s.pop();
@@ -52,7 +52,42 @@ bool positiveMatchGroup(const std::string& input_line, const std::string& patter
     return false;
 
 }
+bool negitiveMatchGroup(const std::string& input_line, const std::string& pattern){
+    std::stack<char> s;
+    std::stack<std::pair<char,char>> s_pair;
+    int idx = 2, patternSize = pattern.length();
+    while(idx<patternSize-1){
+        if(idx != patternSize-1 && pattern[idx] == '-'){
+            idx++;
+            char temp = s.top();
+            s.pop();
+            s_pair.push({temp,pattern[idx]});
+        }
+        else{
+            s.push(pattern[idx]);
+        }
+        idx++;
+    }
+    while (!s.empty())
+    {
+        char temp = s.top();
+        s.pop();
+        if(input_line.find(temp) != std::string::npos) return false;
+    }
+    while (!s_pair.empty())
+    {
+        std::pair<char,char> temp = s_pair.top();
+        s_pair.pop();
+        char temp_1 = temp.first, temp_2 = temp.second;
+        for(char ch = temp_1; ch<=temp_2;ch++){
+            if(input_line.find(ch) != std::string::npos) return false;
+        }
+        
+    }
+    
+    return true;
 
+}
 bool match_pattern(const std::string& input_line, const std::string& pattern) {
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
