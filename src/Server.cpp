@@ -8,6 +8,13 @@ bool matchdigit(const std::string& input_line){
     }
     return false;
 }
+bool matchalphanumeric(const std::string& input_line){
+    int length = input_line.size();
+    for(int i = 0;i<length;i++){
+        if(std::isalnum(input_line[i])) return true;
+    }
+    return false;
+}
 
 bool match_pattern(const std::string& input_line, const std::string& pattern) {
     if (pattern.length() == 1) {
@@ -19,7 +26,9 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
         case 'd':
             return matchdigit(input_line);
             break;
-        
+        case 'w':
+            return matchalphanumeric(input_line);
+            break;
         default:
             throw std::runtime_error("Unhandled pattern " + pattern);
             break;
