@@ -1,12 +1,29 @@
 #include <iostream>
 #include <string>
 
+bool matchdigit(const std::string& input_line){
+    int length = input_line.size();
+    for(int i = 0;i<length;i++){
+        if(std::isdigit(input_line[i])) return true;
+    }
+    return false;
+}
+
 bool match_pattern(const std::string& input_line, const std::string& pattern) {
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
     }
-    else if(pattern == "\d"){
-        return (input_line >= "0" && input_line<="9");
+    else if(pattern[0] == '\\' && pattern.length() == 2){
+        switch (pattern[1])
+        {
+        case 'd':
+            return matchdigit(input_line);
+            break;
+        
+        default:
+            throw std::runtime_error("Unhandled pattern " + pattern);
+            break;
+        }
     }
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);
