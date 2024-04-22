@@ -192,7 +192,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                                 if(!ans) return false;
                                 else{
                                     temp+=size;
-                                    break;
+                                    start = j;
                                 }
                             }  
                             j++;      
