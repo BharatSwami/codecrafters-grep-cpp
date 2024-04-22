@@ -6,11 +6,12 @@
 #include <sstream>
 
 
-std::vector<std::string> getPatterns(const std::string& pattern){
-    std::stringstream ss(pattern);
+std::vector<std::string> getPatterns(const std::string& pattern,int start , int end){
+    std::string r = pattern.substr(start, end-start+1);
+    std::stringstream ss(r);
     std::string token; 
     std::vector<std::string> patterns; 
-    char delimiter = ','; 
+    char delimiter = '|'; 
   
     while (getline(ss, token, delimiter)) { 
         patterns.push_back(token); 
@@ -179,7 +180,26 @@ bool match(const std::string& input_line, const std::string& pattern){
                         }
 
                     }
-                    
+                else if(pattern[j] == '(' ){
+                        int start=j;
+                        while(j<pattern.size()){
+                            if(pattern[j] != ')') j++;
+                        }
+                        std::vector<std::string> patterns = getPatterns(pattern,start,j);
+                        bool ans = false;
+                        for(const auto pattern : patterns){
+                            std::cout << pattern<<std::endl;
+                            if(pattern[j] == '^'){
+                                ans = ans || negitiveMatchGroup(input_line,pattern,start,j+1);
+                            }
+                            else{
+                                ans = ans || positiveMatchGroup(input_line,pattern,start,j+1);
+                            }
+                            if(ans = false) return false;
+                        }
+                        
+
+                    } 
                 else if(pattern[j] == '+'){
                     j++;
                     while(j<pattern.size() && temp<input_line.size() && pattern[j] != input_line[temp]){
@@ -246,14 +266,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     }
 }
 
-bool mutipleMatchPatter(const std::string& input_line, const std::string& pattern){
-    std::vector<std::string> patterns = getPatterns(pattern);
-    for(const auto pattern : patterns){
-        std::cout << pattern<<std::endl;
-        if(match_pattern(input_line,pattern)) return true;
-    }
-    return false;
-}
+
 
 int main(int argc, char* argv[]) {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -278,7 +291,7 @@ int main(int argc, char* argv[]) {
     std::getline(std::cin, input_line);
     
     try {
-        if (mutipleMatchPatter(input_line, pattern)) {
+        if (match_pattern(input_line, pattern)) {
             return 0;
         } else {
             return 1;
