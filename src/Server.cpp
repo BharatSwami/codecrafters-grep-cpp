@@ -94,23 +94,23 @@ bool negitiveMatchGroup(const std::string& input_line, const std::string& patter
 
 bool match(const std::string& input_line, const std::string& pattern){
     int i = 0;
-    bool startWildcard = false;
-    bool endWildcard = false;
+    bool startAnchor = false;
+    bool endAnchor = false;
     if(pattern[0] == '^'){
-            startWildcard = true;
+            startAnchor = true;
         } 
     if(pattern[pattern.size()-1] == '$'){
             //std::string pattern = std::string(pattern.rbegin(),pattern.rend());
             //std::string input_line = std::string(input_line.rbegin(),input_line.rend());
-            endWildcard = true;
+            endAnchor = true;
         }
     while(i<input_line.size()){
         int j = 0;
-        if(startWildcard){
+        if(startAnchor){
             j++;
         } 
           
-        if(endWildcard){
+        if(endAnchor){
             if(input_line.size() < pattern.size()-1) return false;
             else{
                 i = input_line.size() - (pattern.size() -1);
@@ -147,6 +147,13 @@ bool match(const std::string& input_line, const std::string& pattern){
                         }
 
                     }
+                    else if(pattern[j] == '+'){
+                        j++;
+                        while(temp<input_line.size() && pattern[j] != input_line[temp]){
+                            temp++;
+                        }
+                        if(temp == input_line.size()) return false;
+                    }
                 }
                 else{
                     break;
@@ -161,8 +168,8 @@ bool match(const std::string& input_line, const std::string& pattern){
             j++;
         }
         if(j == pattern.size()) return true;
-        if(startWildcard && j!= pattern.size()) return false;
-        if(endWildcard){
+        if(startAnchor && j!= pattern.size()) return false;
+        if(endAnchor){
             if(j == pattern.size()-1) return true;
             return false;
         }
