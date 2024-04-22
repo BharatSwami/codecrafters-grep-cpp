@@ -176,7 +176,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                             
                             
                             int size = 0;
-                            if(pattern[j] == '|'){
+                            if(pattern[j] == '|' || pattern[j] == ')'){
                                 std::string pat = pattern.substr(start+1,j-start-1);
                                 std::cout << pat<<std::endl;
                                 if(match(in_line,pat)){
