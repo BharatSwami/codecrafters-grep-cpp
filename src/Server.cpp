@@ -96,7 +96,7 @@ bool match(const std::string& input_line, const std::string& pattern){
     while(i<input_line.size()){
         int j = 0;
         bool start = false;
-        if(input_line[i] == '^'){
+        if(pattern[0] == '^'){
             i++;
             start = true;
         }
