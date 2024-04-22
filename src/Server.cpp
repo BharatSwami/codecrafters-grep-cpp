@@ -176,21 +176,21 @@ bool match(const std::string& input_line, const std::string& pattern){
                             int size = 0;
                             if(pattern[j] == '|'){
                                 if(pattern[start+1] == '^'){
-                                    if (negitiveMatchGroup(input_line,pattern,start+2,j-1)){
+                                    if (negitiveMatchGroup(input_line,pattern,start+2,j)){
                                         ans = true;
                                         size = j-start-1;
                                         while(j<pattern.size() && pattern[j] != ')') j++;
                                     }
                                 }
                                 else{
-                                    if (positiveMatchGroup(input_line,pattern,start+1,j-1)){
+                                    if (positiveMatchGroup(input_line,pattern,start+1,j)){
                                         ans = true;
                                         size = j-start-1;
                                         while(j<pattern.size() && pattern[j] != ')') j++;
                                     }
                                 }
                                 if(!ans){
-                                    start = j+1;
+                                    start = j;
                                 }
                                 else{
                                     temp+=size;
