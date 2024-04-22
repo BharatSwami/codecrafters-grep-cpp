@@ -180,7 +180,6 @@ bool match(const std::string& input_line, const std::string& pattern){
                                         ans = true;
                                         size = j-start-1;
                                         while(j<pattern.size() && pattern[j] != ')') j++;
-                                        break;
                                     }
                                 }
                                 else{
@@ -188,12 +187,12 @@ bool match(const std::string& input_line, const std::string& pattern){
                                         ans = true;
                                         size = j-start-1;
                                         while(j<pattern.size() && pattern[j] != ')') j++;
-                                        break;
                                     }
                                 }
                                 if(!ans) return false;
                                 else{
-                                    temp+=size+2;
+                                    temp+=size;
+                                    break;
                                 }
                             }  
                             j++;      
