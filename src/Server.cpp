@@ -125,8 +125,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                     j+=2;
                 }
                 else{
-                    j++;
-                    temp++;
+                    j+=2;
                 }
             }
             else{
