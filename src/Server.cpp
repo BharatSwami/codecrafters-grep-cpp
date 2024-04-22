@@ -190,7 +190,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                                     temp+=size;
                                     break;
                                 }
-                                if(pattern[j] != ')') break;
+                                if(pattern[j] == ')') break;
                             }  
                             j++;      
                         }
