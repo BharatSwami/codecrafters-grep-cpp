@@ -150,7 +150,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                     break;
                 }
             }
-            else if(pattern[j] == '[' ){
+                else if(pattern[j] == '[' ){
                         int start=j;
                         while(j<pattern.size()){
                             if(pattern[j] != ']') j++;
@@ -164,18 +164,21 @@ bool match(const std::string& input_line, const std::string& pattern){
 
                     }
                     
-            else if(pattern[j] == '+'){
-                j++;
-                while(j<pattern.size() && temp<input_line.size() && pattern[j] != input_line[temp]){
+                else if(pattern[j] == '+'){
+                    j++;
+                    while(j<pattern.size() && temp<input_line.size() && pattern[j] != input_line[temp]){
+                        temp++;
+                }
+            }
+                else if(pattern[j] == '.'){
                     temp++;
                 }
-            }
-            else{
-                if(input_line[temp] != pattern[j]){
-                    break;
+                else{
+                    if(input_line[temp] != pattern[j]){
+                        break;
+                    }
+                    else temp++;
                 }
-                else temp++;
-            }
             
             }
             j++;
