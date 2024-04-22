@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <algorithm>
 
 bool matchdigit(const std::string& input_line){
     int length = input_line.size();
@@ -98,6 +99,12 @@ bool match(const std::string& input_line, const std::string& pattern){
         bool start = false;
         if(pattern[0] == '^'){
             j++;
+            start = true;
+        }
+        if(pattern[pattern.size()-1] == '$'){
+            j++;
+            reverse(pattern.begin(),pattern.end());
+            reverse(input_line.begin(),input_line.end());
             start = true;
         }
         int temp = i;
