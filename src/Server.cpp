@@ -6,18 +6,6 @@
 #include <sstream>
 
 
-std::vector<std::string> getPatterns(const std::string& pattern,int start , int end){
-    std::string r = pattern.substr(start+1, end-start);
-    std::stringstream ss(r);
-    std::string token; 
-    std::vector<std::string> patterns; 
-    char delimiter = '|'; 
-  
-    while (getline(ss, token, delimiter)) { 
-        patterns.push_back(token); 
-    }
-    return patterns;
-}
 
 
 bool matchdigit(const std::string& input_line){
@@ -182,35 +170,34 @@ bool match(const std::string& input_line, const std::string& pattern){
                     }
                 else if(pattern[j] == '(' ){
                         int start=j;
-                        while(j<pattern.size()){
-                            if(pattern[j] != ')') j++;
-                        }
-                        std::vector<std::string> patterns = getPatterns(pattern,start,j);
-                        bool ans = false;
-                        int size = 0;
-                        for(const auto pat : patterns){
-                            std::cout << pat<<std::endl;
-                            if(pat[start+1] == '^'){
-                                if (negitiveMatchGroup(input_line,pat,0,pat.size())){
-                                    ans = true;
-                                    size = pat.size();
-                                    break;
+                        while(j<pattern.size() && pattern[j] != ')'){
+                            
+                            bool ans = false;
+                            int size = 0;
+                            if(pattern[j] == '|'){
+                                if(pattern[start+1] == '^'){
+                                    if (negitiveMatchGroup(input_line,pattern,start+2,j-1)){
+                                        ans = true;
+                                        size = j-start-1;
+                                        while(j<pattern.size() && pattern[j] != ')') j++;
+                                        break;
+                                    }
                                 }
-                            }
-                            else{
-                                if (positiveMatchGroup(input_line,pat,0,pat.size())){
-                                    ans = true;
-                                    size = pat.size();
-                                    break;
+                                else{
+                                    if (positiveMatchGroup(input_line,pattern,start+1,j-1)){
+                                        ans = true;
+                                        size = j-start-1;
+                                        while(j<pattern.size() && pattern[j] != ')') j++;
+                                        break;
+                                    }
                                 }
-                            }
-                            if(!ans) return false;
-                            else{
-                                temp+=size;
-                            }
+                                if(!ans) return false;
+                                else{
+                                    temp+=size;
+                                }
+                            }  
+                            j++;      
                         }
-                        
-
                     } 
                 else if(pattern[j] == '+'){
                     j++;
