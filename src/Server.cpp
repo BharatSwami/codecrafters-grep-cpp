@@ -90,63 +90,62 @@ bool negitiveMatchGroup(const std::string& input_line, const std::string& patter
     return true;
 
 }
-bool match_subpart(const std::string& input_line, const std::string& pattern,int idx){
-    int j = 0;
-    int temp = idx;
-    while(j<pattern.size() && temp < input_line.size()){
-        if(pattern[j] == '\\'){
-            j++;
-            if(j<pattern.size()){
-                if(pattern[j] == 'd'){
-                    if(!isdigit(input_line[temp])){
-                        break;
-                    }
-                    else temp++;
-                }
-                else if(pattern[j] == 'w'){
-                    if(!isalnum(input_line[temp])){
-                        break;
-                    }
-                    else temp++;
-                }
-                else if(pattern[j] == '[' ){
-                    int start=j;
-                    while(j<pattern.size()){
-                        if(pattern[j] != ']') j++;
-                    }
-                    if(pattern[j] == '^'){
-                        return negitiveMatchGroup(input_line,pattern,start,j+1);
-                    }
-                    else{
-                        return positiveMatchGroup(input_line,pattern,start,j+1);
-                    }
 
+bool match(const std::string& input_line, const std::string& pattern){
+    int i = 0;
+    while(i<input_line.size()){
+        int j = 0;
+        bool start = false;
+        if(input_line[i] == '^'){
+            i++;
+            start = true;
+        }
+        int temp = i;
+        while(j<pattern.size() && temp < input_line.size()){
+            if(pattern[j] == '\\'){
+                j++;
+                if(j<pattern.size()){
+                    if(pattern[j] == 'd'){
+                        if(!isdigit(input_line[temp])){
+                            break;
+                        }
+                        else temp++;
+                    }
+                    else if(pattern[j] == 'w'){
+                        if(!isalnum(input_line[temp])){
+                            break;
+                        }
+                        else temp++;
+                    }
+                    else if(pattern[j] == '[' ){
+                        int start=j;
+                        while(j<pattern.size()){
+                            if(pattern[j] != ']') j++;
+                        }
+                        if(pattern[j] == '^'){
+                            return negitiveMatchGroup(input_line,pattern,start,j+1);
+                        }
+                        else{
+                            return positiveMatchGroup(input_line,pattern,start,j+1);
+                        }
+
+                    }
+                }
+                else{
+                    break;
                 }
             }
             else{
-                break;
+                if(input_line[temp] != pattern[j]){
+                    break;
+                }
+                else temp++;
             }
+            j++;
         }
-        else{
-            if(input_line[temp] != pattern[j]){
-                break;
-            }
-            else temp++;
-        }
-        j++;
-    }
-    if(j == pattern.size()) return true;
-    return false;
-}
-bool match(const std::string& input_line, const std::string& pattern){
-    int idx = 0;
-    if(input_line[0] == '^'){
-        return match_subpart(input_line,pattern,0);
-    }
-    while(idx<input_line.size()){
-        bool matchSubpart = match_subpart(input_line,pattern,idx);
-        if(match_subpart) return true;
-        idx++;
+        if(j == pattern.size()) return true;
+        if(start && j!= pattern.size()) return false;
+        i++;
     }
     
     return false;
