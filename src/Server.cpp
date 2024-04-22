@@ -103,8 +103,8 @@ bool match(const std::string& input_line, const std::string& pattern){
         }
         if(pattern[pattern.size()-1] == '$'){
             j++;
-            std::reverse(pattern.begin(),pattern.end());
-            std::reverse(input_line.begin(),input_line.end());
+            std::string pattern = std::string(pattern.rbegin(),pattern.rend());
+            std::string input_line = std::string(input_line.rbegin(),input_line.rend());
             start = true;
         }
         int temp = i;
