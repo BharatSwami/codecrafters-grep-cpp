@@ -149,10 +149,9 @@ bool match(const std::string& input_line, const std::string& pattern){
                     }
                     else if(pattern[j] == '+'){
                         j++;
-                        while(temp<input_line.size() && pattern[j] != input_line[temp]){
+                        while(j<pattern.size() && temp<input_line.size() && pattern[j] != input_line[temp]){
                             temp++;
                         }
-                        if(temp == input_line.size()) return false;
                     }
                 }
                 else{
