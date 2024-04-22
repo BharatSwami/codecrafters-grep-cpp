@@ -249,6 +249,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
 bool mutipleMatchPatter(const std::string& input_line, const std::string& pattern){
     std::vector<std::string> patterns = getPatterns(pattern);
     for(const auto pattern : patterns){
+        std::cout << pattern<<std::endl;
         if(match_pattern(input_line,pattern)) return true;
     }
     return false;
