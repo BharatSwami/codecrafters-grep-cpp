@@ -176,20 +176,14 @@ bool match(const std::string& input_line, const std::string& pattern){
                             
                             int size = 0;
                             if(pattern[j] == '|'){
-                                if(pattern[start+1] == '^'){
-                                    if (negitiveMatchGroup(input_line,pattern,start+2,j)){
-                                        ans = true;
-                                        size = j-start-1;
-                                        while(j<pattern.size() && pattern[j] != ')') j++;
-                                    }
+                                std::string pat = pattern.substr(start+1,j-start-1);
+                                std::string in_line = input_line.substr(temp,input_line.size()-temp);
+                                if(match(in_line,pat)){
+                                    ans = true;
+                                    size = pat.size();
+                                    while(j<pattern.size() && pattern[j] != ')') j++;
                                 }
-                                else{
-                                    if (positiveMatchGroup(input_line,pattern,start+1,j)){
-                                        ans = true;
-                                        size = j-start-1;
-                                        while(j<pattern.size() && pattern[j] != ')') j++;
-                                    }
-                                }
+                                
                                 if(!ans){
                                     start = j;
                                 }
