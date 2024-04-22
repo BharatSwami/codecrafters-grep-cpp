@@ -170,9 +170,10 @@ bool match(const std::string& input_line, const std::string& pattern){
                     }
                 else if(pattern[j] == '(' ){
                         int start=j;
+                        bool ans = false;
                         while(j<pattern.size() && pattern[j] != ')'){
                             
-                            bool ans = false;
+                            
                             int size = 0;
                             if(pattern[j] == '|'){
                                 if(pattern[start+1] == '^'){
@@ -199,6 +200,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                             }  
                             j++;      
                         }
+                        if(!ans) return false;
                     } 
                 else if(pattern[j] == '+'){
                     j++;
