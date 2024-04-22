@@ -162,9 +162,6 @@ bool match(const std::string& input_line, const std::string& pattern){
             }
             else if(pattern[j] == '?'){
                 j++;
-                if(j<pattern.size() && pattern[j] == input_line[temp]){
-                    continue;
-                }
                 while(j<pattern.size() && temp<input_line.size() && pattern[j] != input_line[temp]){
                     temp++;
                 }
