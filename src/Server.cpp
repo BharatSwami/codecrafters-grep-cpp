@@ -171,13 +171,14 @@ bool match(const std::string& input_line, const std::string& pattern){
                 else if(pattern[j] == '(' ){
                         int start=j;
                         bool ans = false;
+                        std::string in_line = input_line.substr(temp,input_line.size()-temp);
                         while(j<pattern.size() && pattern[j] != ')'){
                             
                             
                             int size = 0;
                             if(pattern[j] == '|'){
                                 std::string pat = pattern.substr(start+1,j-start-1);
-                                std::string in_line = input_line.substr(temp,input_line.size()-temp);
+                                std::cout << pat<<std::endl;
                                 if(match(in_line,pat)){
                                     ans = true;
                                     size = pat.size();
