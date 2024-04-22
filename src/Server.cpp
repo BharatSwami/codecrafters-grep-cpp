@@ -119,7 +119,14 @@ bool match(const std::string& input_line, const std::string& pattern){
         int temp = i;
 
         while(j<pattern.size() && temp < input_line.size()){
-            if(pattern[j] == '\\'){
+            if(j+1<pattern.size() && pattern[j+1] == '?'){
+                if(input_line[temp] == pattern[j]){
+                    temp++;
+                    j+=2;
+                }
+            }
+            else{
+                if(pattern[j] == '\\'){
                 j++;
                 if(j<pattern.size()){
                     if(pattern[j] == 'd'){
@@ -160,17 +167,13 @@ bool match(const std::string& input_line, const std::string& pattern){
                     temp++;
                 }
             }
-            else if(pattern[j] == '?'){
-                j++;
-                while(j<pattern.size() && temp<input_line.size() && pattern[j] != input_line[temp]){
-                    temp++;
-                }
-            }
             else{
                 if(input_line[temp] != pattern[j]){
                     break;
                 }
                 else temp++;
+            }
+            
             }
             j++;
         }
