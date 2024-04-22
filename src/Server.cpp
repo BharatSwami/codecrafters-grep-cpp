@@ -122,10 +122,10 @@ bool match(const std::string& input_line, const std::string& pattern){
             if(j+1<pattern.size() && pattern[j+1] == '?'){
                 if(input_line[temp] == pattern[j]){
                     temp++;
-                    j+=2;
+                    j+=1;
                 }
                 else{
-                    j+=2;
+                    j+=1;
                 }
             }
             else{
