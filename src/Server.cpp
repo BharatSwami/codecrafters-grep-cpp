@@ -94,20 +94,30 @@ bool negitiveMatchGroup(const std::string& input_line, const std::string& patter
 
 bool match(const std::string& input_line, const std::string& pattern){
     int i = 0;
+    bool startWildcard = false;
+    bool endWildcard = false;
+    if(pattern[0] == '^'){
+            startWildcard = true;
+        } 
+    if(pattern[pattern.size()-1] == '$'){
+            //std::string pattern = std::string(pattern.rbegin(),pattern.rend());
+            //std::string input_line = std::string(input_line.rbegin(),input_line.rend());
+            endWildcard = true;
+        }
     while(i<input_line.size()){
         int j = 0;
-        bool start = false;
-        if(pattern[0] == '^'){
+        if(startWildcard){
             j++;
-            start = true;
-        }
-        if(pattern[pattern.size()-1] == '$'){
-            j++;
-            std::string pattern = std::string(pattern.rbegin(),pattern.rend());
-            std::string input_line = std::string(input_line.rbegin(),input_line.rend());
-            start = true;
+        } 
+          
+        if(endWildcard){
+            if(input_line.size() < pattern.size()-1) return false;
+            else{
+                i = input_line.size() - (pattern.size() -1);
+            }
         }
         int temp = i;
+
         while(j<pattern.size() && temp < input_line.size()){
             if(pattern[j] == '\\'){
                 j++;
@@ -151,7 +161,11 @@ bool match(const std::string& input_line, const std::string& pattern){
             j++;
         }
         if(j == pattern.size()) return true;
-        if(start && j!= pattern.size()) return false;
+        if(startWildcard && j!= pattern.size()) return false;
+        if(endWildcard){
+            if(j == pattern.size()-1) return true;
+            return false;
+        }
         i++;
     }
     
