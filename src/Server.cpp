@@ -97,7 +97,7 @@ bool match(const std::string& input_line, const std::string& pattern){
         int j = 0;
         bool start = false;
         if(pattern[0] == '^'){
-            i++;
+            j++;
             start = true;
         }
         int temp = i;
