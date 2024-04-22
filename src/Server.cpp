@@ -189,10 +189,12 @@ bool match(const std::string& input_line, const std::string& pattern){
                                         while(j<pattern.size() && pattern[j] != ')') j++;
                                     }
                                 }
-                                if(!ans) return false;
+                                if(!ans){
+                                    start = j+1;
+                                }
                                 else{
                                     temp+=size;
-                                    start = j;
+                                    break;
                                 }
                             }  
                             j++;      
