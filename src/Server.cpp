@@ -187,15 +187,25 @@ bool match(const std::string& input_line, const std::string& pattern){
                         }
                         std::vector<std::string> patterns = getPatterns(pattern,start,j);
                         bool ans = false;
-                        for(const auto pattern : patterns){
-                            std::cout << pattern<<std::endl;
-                            if(pattern[j] == '^'){
-                                ans = ans || negitiveMatchGroup(input_line,pattern,start,j+1);
+                        int size = 0;
+                        for(const auto pat : patterns){
+                            std::cout << pat<<std::endl;
+                            if(pat[start+1] == '^'){
+                                if (negitiveMatchGroup(input_line,pat,0,pat.size())){
+                                    ans = true;
+                                    size = pat.size();
+                                }
                             }
                             else{
-                                ans = ans || positiveMatchGroup(input_line,pattern,start,j+1);
+                                if (positiveMatchGroup(input_line,pat,0,pat.size())){
+                                    ans = true;
+                                    size = pat.size();
+                                }
                             }
-                            if(ans = false) return false;
+                            if(!ans) return false;
+                            else{
+                                temp+=size;
+                            }
                         }
                         
 
