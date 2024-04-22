@@ -172,7 +172,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                         int start=j;
                         bool ans = false;
                         std::string in_line = input_line.substr(temp,input_line.size()-temp);
-                        while(j<pattern.size() && pattern[j] != ')'){
+                        while(j<pattern.size() ){
                             
                             
                             int size = 0;
@@ -190,6 +190,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                                     temp+=size;
                                     break;
                                 }
+                                if(pattern[j] != ')') break;
                             }  
                             j++;      
                         }
