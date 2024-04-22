@@ -7,7 +7,7 @@
 
 
 std::vector<std::string> getPatterns(const std::string& pattern,int start , int end){
-    std::string r = pattern.substr(start, end-start+1);
+    std::string r = pattern.substr(start+1, end-start);
     std::stringstream ss(r);
     std::string token; 
     std::vector<std::string> patterns; 
@@ -194,12 +194,14 @@ bool match(const std::string& input_line, const std::string& pattern){
                                 if (negitiveMatchGroup(input_line,pat,0,pat.size())){
                                     ans = true;
                                     size = pat.size();
+                                    break;
                                 }
                             }
                             else{
                                 if (positiveMatchGroup(input_line,pat,0,pat.size())){
                                     ans = true;
                                     size = pat.size();
+                                    break;
                                 }
                             }
                             if(!ans) return false;
