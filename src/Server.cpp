@@ -2,6 +2,22 @@
 #include <string>
 #include <stack>
 #include <algorithm>
+#include <vector>
+#include <sstream>
+
+
+std::vector<std::string> getPatterns(const std::string& pattern){
+    std::stringstream ss(pattern);
+    std::string token; 
+    std::vector<std::string> patterns; 
+    char delimiter = ','; 
+  
+    while (getline(ss, token, delimiter)) { 
+        patterns.push_back(token); 
+    }
+    return patterns;
+}
+
 
 bool matchdigit(const std::string& input_line){
     int length = input_line.size();
@@ -230,6 +246,14 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     }
 }
 
+bool mutipleMatchPatter(const std::string& input_line, const std::string& pattern){
+    std::vector<std::string> patterns = getPatterns(pattern);
+    for(const auto pattern : patterns){
+        if(match_pattern(input_line,pattern)) return true;
+    }
+    return false;
+}
+
 int main(int argc, char* argv[]) {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     std::cout << "Logs from your program will appear here" << std::endl;
@@ -253,7 +277,7 @@ int main(int argc, char* argv[]) {
     std::getline(std::cin, input_line);
     
     try {
-        if (match_pattern(input_line, pattern)) {
+        if (mutipleMatchPatter(input_line, pattern)) {
             return 0;
         } else {
             return 1;
