@@ -268,13 +268,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
                 mpp[key] = pattern.substr(i+1,temp-i-1);
                 i=temp+1;
             }
-            if(pattern[i]=='\\'){
-                if(i+1<pattern.size()){
-                    if(std::isdigit(pattern[i+1]) && pattern[i+1]>='1'){
-                        continue;
-                    }
-                }
-            }
+            
         }
         return match(input_line,pattern,mpp);
     }
