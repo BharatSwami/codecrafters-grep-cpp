@@ -276,6 +276,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
                 mpp[key] = pattern.substr(i+1,temp-i-1);
                 i=temp+1;
             }
+            i++;
             
         }
         return match(input_line,pattern,mpp);
