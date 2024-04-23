@@ -98,7 +98,7 @@ bool negitiveMatchGroup(const std::string& input_line, const std::string& patter
 
 }
 
-bool match(const std::string& input_line, const std::string& pattern,std::unordered_map<int,std::string> mpp){
+bool match(const std::string& input_line, const std::string& pattern,std::unordered_map<int,std::pair<std::string,int>> mpp){
     int i = 0;
     bool startAnchor = false;
     bool endAnchor = false;
@@ -155,12 +155,15 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                             temp2 += pattern[j];
                             // comment
                             int temp1= std::stoi(temp2);
-                            std::string subpattern = mpp[temp1];
+                            std::string subpattern = mpp[temp1].first;
+                            int size = mpp[temp1].second;
                             std::string in_line = input_line.substr(temp,input_line.size()-temp);
-                            std::cout << subpattern<<std::endl;
+                            //std::cout << subpattern<<std::endl;
                             if(!match(in_line,subpattern,mpp)) return false;
-                            if(subpattern[0] == '\\')temp+=1;
-                            else temp+=subpattern.size();
+                            size = subpattern.size();
+                            auto count = std::count(subpattern.begin(), subpattern.end(),'\\');
+                            size-=count;
+                            temp+=size;
                         
                     }
                     }
@@ -188,7 +191,7 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                             int size = 0;
                             if(pattern[j] == '|' || pattern[j] == ')'){
                                 std::string pat = pattern.substr(start+1,j-start-1);
-                                std::cout << pat<<std::endl;
+                                //std::cout << pat<<std::endl;
                                 if(match(in_line,pat,mpp)){
                                     ans = true;
                                     size = pat.size();
@@ -198,6 +201,7 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                                 
                                 if(ans){
                                     temp+=size;
+                                    
                                     break;
                                 }
                                 if(pattern[j] == ')') break;
@@ -265,7 +269,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
 
     }
     else if(pattern.length() > 1){
-        std::unordered_map<int,std::string> mpp;
+        std::unordered_map<int,std::pair<std::string,int>> mpp;
         int key=1,i = 0;
         while(i<pattern.size()){
             if(pattern[i] == '('){
@@ -273,7 +277,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
                 while(temp<pattern.size() && pattern[temp]!=')'){
                     temp++;
                 }
-                mpp[key] = pattern.substr(i+1,temp-i-1);
+                mpp[key] = {pattern.substr(i+1,temp-i-1),0};
                 i=temp+1;
             }
             i++;
