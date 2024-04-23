@@ -102,6 +102,14 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
     int i = 0;
     bool startAnchor = false;
     bool endAnchor = false;
+    if(pattern[0] == '^'){
+            startAnchor = true;
+        } 
+    if(pattern[pattern.size()-1] == '$'){
+            //std::string pattern = std::string(pattern.rbegin(),pattern.rend());
+            //std::string input_line = std::string(input_line.rbegin(),input_line.rend());
+            endAnchor = true;
+        }
     while(i<input_line.size()){
         int j = 0;
         if(startAnchor){
