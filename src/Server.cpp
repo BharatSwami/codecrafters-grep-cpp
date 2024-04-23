@@ -158,12 +158,13 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                             std::string subpattern = mpp[temp1].first;
                             int size = mpp[temp1].second;
                             std::string in_line = input_line.substr(temp,input_line.size()-temp);
-                            //std::cout << subpattern<<std::endl;
+                            std::cout << input_line[temp]<<std::endl;
                             if(!match(in_line,subpattern,mpp)) return false;
                             size = subpattern.size();
                             auto count = std::count(subpattern.begin(), subpattern.end(),'\\');
                             size-=count;
                             temp+=size;
+                            std::cout << input_line[temp]<<std::endl;
                         
                     }
                     }
