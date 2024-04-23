@@ -98,7 +98,7 @@ bool negitiveMatchGroup(const std::string& input_line, const std::string& patter
 
 }
 
-bool match(const std::string& input_line, const std::string& pattern,std::unordered_map<int,std::pair<std::string,int>> mpp){
+bool match(const std::string& input_line, const std::string& pattern,std::unordered_map<int,std::pair<std::string,int>> mpp, int sub_pattern = 0){
     int i = 0;
     bool startAnchor = false;
     bool endAnchor = false;
@@ -139,12 +139,14 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                     j++;
                     if(j<pattern.size()){
                         if(pattern[j] == 'd'){
+                            std::cout<<input_line[temp]<<" " << 'd'<<std::endl;
                             if(!isdigit(input_line[temp])){
                                 break;
                             }
                             else temp++;
                         }
                         else if(pattern[j] == 'w'){
+                            std::cout<<input_line[temp]<<" " << 'w'<<std::endl;
                             if(!isalnum(input_line[temp])){
                                 break;
                             }
@@ -194,10 +196,14 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                             int size = 0;
                             if(pattern[j] == '|' || pattern[j] == ')'){
                                 std::string pat = pattern.substr(start+1,j-start-1);
-                                //std::cout << pat<<std::endl;
-                                if(match(in_line,pat,mpp)){
+                                int newSize = pat.size() - std::count(pat.begin(), pat.end(),'\\');
+                                in_line = in_line.substr(0,newSize);
+                                std::cout << pat<<std::endl;
+                                std::cout<<in_line<<" " << std::endl;
+                                std::cout<<match(in_line,pat,mpp,1)<<std::endl;
+                                if(match(in_line,pat,mpp,1)){
                                     ans = true;
-                                    size = pat.size();
+                                    size = in_line.size();
                                     while(j<pattern.size() && pattern[j] != ')') j++;
                                 }
                                 start=j;
@@ -205,7 +211,7 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                                 if(ans){
                                     temp+=size;
                                     int mpp_size = mpp.size();
-                                    mpp[mpp_size+1] = {pat,pat.size()};
+                                    mpp[mpp_size+1] = {in_line,in_line.size()};
                                     break;
                                 }
                                 if(pattern[j] == ')') break;
@@ -244,7 +250,6 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
     
     return false;
 }
-
 bool match_pattern(const std::string& input_line, const std::string& pattern) {
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
@@ -274,22 +279,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     }
     else if(pattern.length() > 1){
         std::unordered_map<int,std::pair<std::string,int>> mpp;
-        // int key=1,i = 0;
-        // while(i<pattern.size()){
-        //     if(pattern[i] == '('){
-        //         int temp = i;
-        //         while(temp<pattern.size() && pattern[temp]!=')'){
-        //             temp++;
-        //         }
-        //         mpp[key] = {pattern.substr(i+1,temp-i-1),0};
-        //         std::cout << pattern.substr(i+1,temp-i-1)<<std::endl;
-
-        //         i=temp+1;
-        //         key++;
-        //     }
-        //     i++;
-            
-        // }
+        
         return match(input_line,pattern,mpp);
     }
     else {
