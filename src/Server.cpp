@@ -162,9 +162,9 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
 
                             std::cout << input_line[temp]<<std::endl;
                             if(!match(in_line,subpattern,mpp)) return false;
-                            size = subpattern.size();
-                            auto count = std::count(subpattern.begin(), subpattern.end(),'\\');
-                            size-=count;
+                            //size = subpattern.size();
+                            //auto count = std::count(subpattern.begin(), subpattern.end(),'\\');
+                            //size-=count;
                             temp+=size;
                             std::cout << input_line[temp]<<std::endl;
                         
@@ -204,7 +204,8 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                                 
                                 if(ans){
                                     temp+=size;
-                                    
+                                    int mpp_size = mpp.size();
+                                    mpp[mpp_size+1] = {pat,pat.size()};
                                     break;
                                 }
                                 if(pattern[j] == ')') break;
@@ -273,22 +274,22 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
     }
     else if(pattern.length() > 1){
         std::unordered_map<int,std::pair<std::string,int>> mpp;
-        int key=1,i = 0;
-        while(i<pattern.size()){
-            if(pattern[i] == '('){
-                int temp = i;
-                while(temp<pattern.size() && pattern[temp]!=')'){
-                    temp++;
-                }
-                mpp[key] = {pattern.substr(i+1,temp-i-1),0};
-                std::cout << pattern.substr(i+1,temp-i-1)<<std::endl;
+        // int key=1,i = 0;
+        // while(i<pattern.size()){
+        //     if(pattern[i] == '('){
+        //         int temp = i;
+        //         while(temp<pattern.size() && pattern[temp]!=')'){
+        //             temp++;
+        //         }
+        //         mpp[key] = {pattern.substr(i+1,temp-i-1),0};
+        //         std::cout << pattern.substr(i+1,temp-i-1)<<std::endl;
 
-                i=temp+1;
-                key++;
-            }
-            i++;
+        //         i=temp+1;
+        //         key++;
+        //     }
+        //     i++;
             
-        }
+        // }
         return match(input_line,pattern,mpp);
     }
     else {
