@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include <sstream>
+#include <unordered_map> 
 
 
 
@@ -97,18 +98,10 @@ bool negitiveMatchGroup(const std::string& input_line, const std::string& patter
 
 }
 
-bool match(const std::string& input_line, const std::string& pattern){
+bool match(const std::string& input_line, const std::string& pattern,std::unordered_map<int,std::string> mpp){
     int i = 0;
     bool startAnchor = false;
     bool endAnchor = false;
-    if(pattern[0] == '^'){
-            startAnchor = true;
-        } 
-    if(pattern[pattern.size()-1] == '$'){
-            //std::string pattern = std::string(pattern.rbegin(),pattern.rend());
-            //std::string input_line = std::string(input_line.rbegin(),input_line.rend());
-            endAnchor = true;
-        }
     while(i<input_line.size()){
         int j = 0;
         if(startAnchor){
@@ -135,26 +128,34 @@ bool match(const std::string& input_line, const std::string& pattern){
             }
             else{
                 if(pattern[j] == '\\'){
-                j++;
-                if(j<pattern.size()){
-                    if(pattern[j] == 'd'){
-                        if(!isdigit(input_line[temp])){
-                            break;
+                    j++;
+                    if(j<pattern.size()){
+                        if(pattern[j] == 'd'){
+                            if(!isdigit(input_line[temp])){
+                                break;
+                            }
+                            else temp++;
                         }
-                        else temp++;
-                    }
-                    else if(pattern[j] == 'w'){
-                        if(!isalnum(input_line[temp])){
-                            break;
+                        else if(pattern[j] == 'w'){
+                            if(!isalnum(input_line[temp])){
+                                break;
+                            }
+                            else temp++;
                         }
-                        else temp++;
+                        else if(std::isdigit(pattern[j]) && pattern[j] >='1'){
+                            std::string temp2;
+                            temp2 += pattern[j];
+                            int temp1= std::stoi(temp2);
+                            std::string subpattern = mpp[temp1];
+                            std::string in_line = input_line.substr(temp,input_line.size()-temp);
+                            std::cout << subpattern<<std::endl;
+                            if(!match(in_line,subpattern,mpp)) return false;
+                            if(subpattern[0] == '\\')temp+=1;
+                            else temp+=subpattern.size();
+                        
                     }
-                    
+                    }
                 }
-                else{
-                    break;
-                }
-            }
                 else if(pattern[j] == '[' ){
                         int start=j;
                         while(j<pattern.size()){
@@ -179,7 +180,7 @@ bool match(const std::string& input_line, const std::string& pattern){
                             if(pattern[j] == '|' || pattern[j] == ')'){
                                 std::string pat = pattern.substr(start+1,j-start-1);
                                 std::cout << pat<<std::endl;
-                                if(match(in_line,pat)){
+                                if(match(in_line,pat,mpp)){
                                     ans = true;
                                     size = pat.size();
                                     while(j<pattern.size() && pattern[j] != ')') j++;
@@ -255,7 +256,26 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
 
     }
     else if(pattern.length() > 1){
-        return match(input_line,pattern);
+        std::unordered_map<int,std::string> mpp;
+        int key=1,i = 0;
+        while(i<pattern.size()){
+            if(pattern[i] == '('){
+                int temp = i;
+                while(temp<pattern.size() && pattern[temp]!=')'){
+                    temp++;
+                }
+                mpp[key] = pattern.substr(i+1,temp-i-1);
+                i=temp+1;
+            }
+            if(pattern[i]=='\\'){
+                if(i+1<pattern.size()){
+                    if(std::isdigit(pattern[i+1]) && pattern[i+1]>='1'){
+                        continue;
+                    }
+                }
+            }
+        }
+        return match(input_line,pattern,mpp);
     }
     else {
         throw std::runtime_error("Unhandled pattern " + pattern);
