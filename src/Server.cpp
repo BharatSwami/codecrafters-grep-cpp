@@ -158,6 +158,8 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                             std::string subpattern = mpp[temp1].first;
                             int size = mpp[temp1].second;
                             std::string in_line = input_line.substr(temp,input_line.size()-temp);
+                            std::cout << in_line<<std::endl;
+
                             std::cout << input_line[temp]<<std::endl;
                             if(!match(in_line,subpattern,mpp)) return false;
                             size = subpattern.size();
@@ -282,6 +284,7 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
                 std::cout << pattern.substr(i+1,temp-i-1)<<std::endl;
 
                 i=temp+1;
+                key++;
             }
             i++;
             
