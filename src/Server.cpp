@@ -222,7 +222,8 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                                 int temp_temp = temp;
                                 int jjj = 0;
                                 if(pat[pat.size()-1] == '+'){
-                                    if(pat[jjj] == '\\'){
+                                    while(jjj<pat.size()){
+                                        if(pat[jjj] == '\\'){
                                         jjj++;
                                         if(jjj<pat.size()){
                                             if(pat[jjj] == 'd'){
@@ -241,7 +242,9 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                                             }
                                         }
                                     }
-                                }
+                                        jjj++;
+                                    }
+                                    }
                                 if (temp_temp>temp) newSize = temp_temp-temp;
                                 std::cout << newSize<<std::endl;
                                 in_line = in_line.substr(0,newSize);
