@@ -186,6 +186,12 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                         std::cout<<j << std::endl;
                         if(pattern[pattern.size()-1] == '+'){
                             j++;
+                            if(pattern[start+1] == '^'){
+                            return negitiveMatchGroup(input_line,pattern,start,pattern.size()-2);
+                            }
+                            else{
+                                return positiveMatchGroup(input_line,pattern,start,pattern.size()-2);
+                            }
                             while(temp<input_line.size() && std::find(pattern.begin(),pattern.end(),input_line[temp])!=pattern.end()){
                                 temp++;
                             }
