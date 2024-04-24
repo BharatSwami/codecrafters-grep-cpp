@@ -178,7 +178,14 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                         while(j<pattern.size()){
                             if(pattern[j] != ']') j++;
                         }
-                        if(pattern[j] == '^'){
+                        if(j+1<pattern.size() && pattern[j+1] == '+'){
+                            j++;
+                            while(temp<input_line.size() && std::find(pattern.begin(),pattern.end(),input_line[temp])!=pattern.end()){
+                                temp++;
+                            }
+                            if(temp == input_line.size()) return true;
+                        }
+                        if(pattern[start+1] == '^'){
                             return negitiveMatchGroup(input_line,pattern,start,j+1);
                         }
                         else{
@@ -196,7 +203,7 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                             int size = 0;
                             if(pattern[j] == '|' || pattern[j] == ')'){
                                 std::string pat = pattern.substr(start+1,j-start-1);
-                                int newSize = pat.size() - std::count(pat.begin(), pat.end(),'\\');
+                                int newSize = pat.size() - std::count(pat.begin(), pat.end(),'\\')-std::count(pat.begin(), pat.end(),'[')-std::count(pat.begin(), pat.end(),']')-std::count(pat.begin(), pat.end(),'+')-std::count(pat.begin(), pat.end(),'*')-std::count(pat.begin(), pat.end(),'?');
                                 in_line = in_line.substr(0,newSize);
                                 std::cout << pat<<std::endl;
                                 std::cout<<in_line<<" " << std::endl;
@@ -288,7 +295,8 @@ bool match_pattern(const std::string& input_line, const std::string& pattern) {
 }
 
 
-
+// abcd is abcd, not efg
+//([abcd]+) is \1, not [^xyz]+
 int main(int argc, char* argv[]) {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     std::cout << "Logs from your program will appear here" << std::endl;
