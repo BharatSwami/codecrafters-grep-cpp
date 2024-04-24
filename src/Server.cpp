@@ -277,11 +277,12 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                         if(!ans) return false;
                     } 
                 else if(pattern[j] == '+'){
-                    j++;
-                    while(j<pattern.size() && temp<input_line.size() && pattern[j] != input_line[temp]){
+                    
+                    while(j<pattern.size() && temp<input_line.size() && pattern[j-1] == input_line[temp]){
                         temp++;
+                    }
+                    j++;
                 }
-            }
                 else if(pattern[j] == '.'){
                     temp++;
                 }
