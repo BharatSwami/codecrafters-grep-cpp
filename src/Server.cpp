@@ -221,28 +221,31 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                                 int newSize = pat.size() - std::count(pat.begin(), pat.end(),'\\')-std::count(pat.begin(), pat.end(),'[')-std::count(pat.begin(), pat.end(),']')-std::count(pat.begin(), pat.end(),'+')-std::count(pat.begin(), pat.end(),'*')-std::count(pat.begin(), pat.end(),'?');
                                 std::cout << newSize<<std::endl;
                                 int temp_temp = temp;
-                                int jjj = 0;
+                                
                                 if(pat[pat.size()-1] == '+'){
+                                    int jjj = 0;
+                                    if( jjj == pat.size()-1) jjj=0;
+                                    if(temp_temp == input_line.size()) return false;
                                     while(jjj<pat.size()-1){
                                         if(pat[jjj] == '\\'){
-                                        jjj++;
-                                        if(jjj<pat.size()){
-                                            if(pat[jjj] == 'd'){
-                                                std::cout<<input_line[temp_temp]<<" " << 'd'<<std::endl;
-                                                if(!isdigit(input_line[temp_temp])){
-                                                    break;
+                                            jjj++;
+                                            if(jjj<pat.size()-1){
+                                                if(pat[jjj] == 'd'){
+                                                    std::cout<<input_line[temp_temp]<<" " << 'd'<<std::endl;
+                                                    if(!isdigit(input_line[temp_temp])){
+                                                        break;
+                                                    }
+                                                    else temp_temp++;
                                                 }
-                                                else temp_temp++;
-                                            }
-                                            else if(pat[jjj] == 'w'){
-                                                std::cout<<input_line[temp_temp]<<" " << 'w'<<std::endl;
-                                                if(!isalnum(input_line[temp_temp])){
-                                                    break;
+                                                else if(pat[jjj] == 'w'){
+                                                    std::cout<<input_line[temp_temp]<<" " << 'w'<<std::endl;
+                                                    if(!isalnum(input_line[temp_temp])){
+                                                        break;
+                                                    }
+                                                    else temp_temp++;
                                                 }
-                                                else temp_temp++;
                                             }
                                         }
-                                    }
                                         jjj++;
                                     }
                                     }
