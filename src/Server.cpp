@@ -176,9 +176,12 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                 else if(pattern[j] == '[' ){
                         int start=j;
                         std::cout<<"hello " << std::endl;
+                        std::cout<<pattern.size() << std::endl;
+                        std::cout<<j << std::endl;
                         while(j<pattern.size()){
                             std::cout<<j << std::endl;
-                            if(pattern[j] != ']') j++;
+                            if(pattern[j] == ']') break;
+                            j++;
                         }
                         std::cout<<j << std::endl;
                         if(pattern[pattern.size()-1] == '+'){
