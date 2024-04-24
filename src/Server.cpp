@@ -219,10 +219,11 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                             if(pattern[j] == '|' || pattern[j] == ')'){
                                 std::string pat = pattern.substr(start+1,j-start-1);
                                 int newSize = pat.size() - std::count(pat.begin(), pat.end(),'\\')-std::count(pat.begin(), pat.end(),'[')-std::count(pat.begin(), pat.end(),']')-std::count(pat.begin(), pat.end(),'+')-std::count(pat.begin(), pat.end(),'*')-std::count(pat.begin(), pat.end(),'?');
+                                std::cout << newSize<<std::endl;
                                 int temp_temp = temp;
                                 int jjj = 0;
                                 if(pat[pat.size()-1] == '+'){
-                                    while(jjj<pat.size()){
+                                    while(jjj<pat.size()-1){
                                         if(pat[jjj] == '\\'){
                                         jjj++;
                                         if(jjj<pat.size()){
