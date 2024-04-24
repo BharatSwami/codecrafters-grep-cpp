@@ -179,7 +179,8 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                         while(j<pattern.size()){
                             if(pattern[j] != ']') j++;
                         }
-                        if(j+2<pattern.size() && pattern[j+2] == '+'){
+                        std::cout<<j << std::endl;
+                        if(pattern[pattern.size()-1] == '+'){
                             j++;
                             while(temp<input_line.size() && std::find(pattern.begin(),pattern.end(),input_line[temp])!=pattern.end()){
                                 temp++;
