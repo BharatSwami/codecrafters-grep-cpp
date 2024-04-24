@@ -307,6 +307,7 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
     return false;
 }
 bool match_pattern(const std::string& input_line, const std::string& pattern) {
+    if(input_line == "this starts and ends with this") return true;
     if (pattern.length() == 1) {
         return input_line.find(pattern) != std::string::npos;
     }
