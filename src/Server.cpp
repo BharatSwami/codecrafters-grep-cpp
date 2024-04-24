@@ -177,6 +177,7 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                         int start=j;
                         std::cout<<"hello " << std::endl;
                         while(j<pattern.size()){
+                            std::cout<<j << std::endl;
                             if(pattern[j] != ']') j++;
                         }
                         std::cout<<j << std::endl;
