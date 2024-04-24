@@ -184,6 +184,9 @@ bool match(const std::string& input_line, const std::string& pattern,std::unorde
                                 temp++;
                             }
                             if(temp == input_line.size()) return true;
+                            else{
+                                if(sub_pattern) return false;
+                            }
                         }
                         if(pattern[start+1] == '^'){
                             return negitiveMatchGroup(input_line,pattern,start,j+1);
